@@ -4,15 +4,20 @@ let posX = 0;
 let posY = 0;
 let currentRotate = 0;
 let currentTextSize = 10;
-let currentSize = 50;
+let currentSize = 1;
+const minSize = 1;
 
 const moveAmount = 10;
-const sizeIncrement = 10;
+const sizeIncrement = 0.1;
 const rotateIncrement = 5;
 const textSizeIncrement = 1;
 
 function updateElement() {
-  movable.style.transform = `translate(${posX}px, ${posY}px)`;
+  if (currentSize < minSize) {
+    currentSize = minSize;
+  }
+  const transform = movable.style.transform = `translate(${posX}px, ${posY}px) scale(${currentSize}) rotate(${currentRotate}deg)`;
+  movable.style.transform = transform;
 }
 
 document.addEventListener("keydown", (event) => {
@@ -23,12 +28,25 @@ document.addEventListener("keydown", (event) => {
       break;
     case "ArrowDown":
       posY += moveAmount;
-    // try to add more way to controll the cube:
-    // move left
-    // move right
-    // rotate left (ex. use "l" as case)
-    // rotate right (ex. use "r" as case)
-    // increase size of cube (text should also increase at the same time)
+      break;
+    case "ArrowLeft":
+      posX -= moveAmount;
+      break;
+    case "ArrowRight":
+      posX += moveAmount;
+      break;
+    case "l":
+      currentRotate -= rotateIncrement;
+      break;
+    case "r":
+      currentRotate += rotateIncrement;
+      break;
+    case "+":
+      currentSize += sizeIncrement;
+      break;
+    case "-":
+      currentSize -= sizeIncrement;
+      break;
   }
   updateElement();
 });
